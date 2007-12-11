@@ -1,7 +1,7 @@
 /*
  * leases.h: lease storage and manipulation.
  *
- * Copyright (C) 2007 Dmitry Davletbaev <ddo@mgn.ru>
+ * Copyright (C) 2007 Dmitry Davletbaev <ddo_@users.sourceforge.net>
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
