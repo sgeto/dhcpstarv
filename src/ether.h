@@ -25,6 +25,7 @@ int init_ether_header(struct ethhdr* eth,
 		const unsigned char* dstmac);
 int get_iface_index(int sock, const char* ifname);
 int get_iface_hwaddr(int sock, const char* ifname, void* buffer, size_t len);
+int set_promisc_mode(int sock, const char* ifname, int promisc_on);
 
 #endif /* ETHER_ROUTINES */
 

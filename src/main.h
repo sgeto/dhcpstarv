@@ -31,6 +31,7 @@ struct app_options {
 	unsigned int exclude_server;
 	char ifname[50];
 	int help;
+	int no_promisc;
 	int verbose;
 };
 

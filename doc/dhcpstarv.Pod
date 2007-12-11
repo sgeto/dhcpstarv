@@ -8,7 +8,7 @@ dhcpstarv - DHCP starvation attack.
 
 dhcpstarv -h
 
-dhcpstarv [-ev] -i IFNAME
+dhcpstarv [-epv] -i IFNAME
 
 =head1 OPTIONS
 
@@ -27,6 +27,12 @@ Print help and exit.
 =item B<-i>, B<--ifname>=I<IFNAME>
 
 Send requests and receive responses on network interface I<IFNAME>.
+
+=item B<-p>, B<--no-promisc>
+
+Do not set network interface to promiscuous mode. Some servers send replies to
+hardware address stored in DHCP options in spite of broadcast option presence,
+in which case this option cause B<dhcpstarv> not to receive server replies.
 
 =item B<-v>, B<--verbose>
 

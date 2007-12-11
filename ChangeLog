@@ -1,2 +1,8 @@
-Still no changes.
+11.12.2007 Dmity Davletbaev <ddo@mgn.ru>
+
+	* feature: set network interface to promiscuous mode (default). Add
+	`--no-promisc' option.
+
+	* feature: free resources and restore non-promiscuous mode if set by
+	dhcpstarv on exit (sigint) as well as on SIGTERM.
 

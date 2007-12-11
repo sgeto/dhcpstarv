@@ -95,3 +95,47 @@ int get_iface_hwaddr(int sock, const char* ifname, void* buffer, size_t len)
 	return 0;
 }
 
+/*
+ * If `promisc_on' is not 0 set network interface to promiscuous mode, else set
+ * to non-promiscuous mode. Return 1 if interface was set to promiscuous mode, 0
+ * if not or -1 if error occured.
+ */
+int set_promisc_mode(int sock, const char* ifname, int promisc_on)
+{
+	int ret = 0;
+	struct ifreq ifr;
+
+	assert(sock != -1);
+	assert(ifname);
+
+	memset(&ifr, 0, sizeof(ifr));
+	strncpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
+	if (-1 == ioctl(sock, SIOCGIFFLAGS, &ifr)) {
+		log_err("can not get flags for %s: %s", ifname,
+				strerror(errno));
+		return -1;
+	}
+
+	/* do not set to promiscuous mode if already in one */
+	if ((ifr.ifr_flags & IFF_PROMISC) && promisc_on)
+		return 0;
+
+	if (promisc_on)
+		ifr.ifr_flags |= IFF_PROMISC;
+	else
+		ifr.ifr_flags ^= IFF_PROMISC;
+
+	log_verbose("setting %s to %s mode", ifname,
+			promisc_on ? "promiscuous" : "non-promiscuous");
+
+	if (-1 == ioctl(sock, SIOCSIFFLAGS, &ifr)) {
+		log_err("can not set %s to %s mode: %s", ifname,
+			promisc_on ? "promiscuous" : "non-promiscuous",
+			strerror(errno));
+		return -1;
+	}
+	ret = 1;
+
+	return ret;
+}
+

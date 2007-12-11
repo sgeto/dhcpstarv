@@ -129,14 +129,14 @@
 .\" ========================================================================
 .\"
 .IX Title "dhcpstarv 1"
-.TH dhcpstarv 1 "2007-12-07" "version 0.1.0" "dhcpstarv manual"
+.TH dhcpstarv 1 "2007-12-11" "version 0.1.0" "dhcpstarv manual"
 .SH "NAME"
 dhcpstarv \- DHCP starvation attack.
 .SH "SYNOPSIS"
 .IX Header "SYNOPSIS"
 dhcpstarv \-h
 .PP
-dhcpstarv [\-ev] \-i \s-1IFNAME\s0
+dhcpstarv [\-epv] \-i \s-1IFNAME\s0
 .SH "OPTIONS"
 .IX Header "OPTIONS"
 .IP "\fB\-e\fR, \fB\-\-exclude\fR=\fI\s-1ADDRESS\s0\fR" 8
@@ -150,6 +150,11 @@ Print help and exit.
 .IP "\fB\-i\fR, \fB\-\-ifname\fR=\fI\s-1IFNAME\s0\fR" 8
 .IX Item "-i, --ifname=IFNAME"
 Send requests and receive responses on network interface \fI\s-1IFNAME\s0\fR.
+.IP "\fB\-p\fR, \fB\-\-no\-promisc\fR" 8
+.IX Item "-p, --no-promisc"
+Do not set network interface to promiscuous mode. Some servers send replies to
+hardware address stored in \s-1DHCP\s0 options in spite of broadcast option presence,
+in which case this option cause \fBdhcpstarv\fR not to receive server replies.
 .IP "\fB\-v\fR, \fB\-\-verbose\fR" 8
 .IX Item "-v, --verbose"
 Print verbose messages.

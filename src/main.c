@@ -27,6 +27,8 @@
 #include <unistd.h>
 #include <netinet/in.h>
 #include <netinet/ether.h>
+#include <signal.h>
+#include <errno.h>
 
 #include "main.h"
 #include "leases.h"
@@ -51,6 +53,13 @@ int ifindex = 0;
 
 /* Max. leases to renew at once. */
 static const int max_renew_leases = 100;
+
+/* Sockets. */
+static int sock_recv = -1;
+static int sock_send = -1;
+
+/* not 0 if promiscuous mode was set */
+static int promisc = 0;
 
 /*
  * Request time and retry count (DHCPDISCOVER and DHCPREQUEST, in seconds).
@@ -116,6 +125,38 @@ void generate_mac(void* buffer)
 }
 
 /*
+ * Free allocated resources and exit.
+ */
+void shutdown_app()
+{
+	ls_free_all_leases();
+
+	if (promisc != 0)
+		set_promisc_mode(sock_recv, opts.ifname, 0);
+
+	if (sock_recv != -1) {
+		close(sock_recv);
+		sock_recv = -1;
+	}
+	if (sock_send != -1) {
+		close(sock_send);
+		sock_send = -1;
+	}
+
+	log_verbose("Exit.");
+	exit(0);
+}
+
+/*
+ * Signal handler.
+ */
+void signal_handler(int signum)
+{
+	if (signum == SIGTERM || signum == SIGINT || signum == SIGQUIT)
+		shutdown_app();
+}
+
+/*
  * Print copyright notice.
  */
 void print_notice()
@@ -135,7 +176,7 @@ void print_help()
 	printf("%s - DHCP starvation utility.\nversion %s\n\n"
 			"Usage:\n"
 			"\t%s -h\n\n"
-			"\t%s [-ev] -i IFNAME\n\n"
+			"\t%s [-epv] -i IFNAME\n\n"
 			"Options:\n"
 			"\t-e, --exclude=ADDRESS\n"
 			"\t\tIgnore replies from server with address ADDRESS.\n"
@@ -143,6 +184,8 @@ void print_help()
 			"\t\tPrint help and exit.\n"
 			"\t-i, --iface=IFNAME\n"
 			"\t\tInterface name.\n"
+			"\t-p, --no-promisc\n"
+			"\t\tDo not set network interface to promiscuous mode.\n"
 			"\t-v, --verbose\n"
 			"\t\tVerbose output.\n",
 			PROGNAME, PACKAGE_VERSION, PROGNAME, PROGNAME);
@@ -156,6 +199,7 @@ int parce_cmd_options(int argc, char* argv[])
 	struct option long_opts[] = {
 		{ "exclude", required_argument, NULL, 'e' },
 		{ "iface", required_argument, NULL, 'i' },
+		{ "no-promisc", no_argument, NULL, 'p' },
 		{ "verbose", no_argument, NULL, 'v' },
 		{ "help", no_argument, NULL, 'h' }
 	};
@@ -163,7 +207,7 @@ int parce_cmd_options(int argc, char* argv[])
 
 	memset(&opts, 0, sizeof(opts));
 
-	while (-1 != (opt = getopt_long(argc, argv, "e:i:hv", long_opts, &optind))) {
+	while (-1 != (opt = getopt_long(argc, argv, "e:i:hpv", long_opts, &optind))) {
 		switch (opt) {
 		case 0:
 			break;
@@ -183,6 +227,9 @@ int parce_cmd_options(int argc, char* argv[])
 		case 'h':
 			opts.help = 1;
 			break;
+		case 'p':
+			opts.no_promisc = 1;
+			break;
 		case '?':
 			return -1;
 			break;
@@ -201,8 +248,9 @@ int parce_cmd_options(int argc, char* argv[])
  */
 int main(int argc, char* argv[])
 {
-	int sock_recv, sock_send;
 	unsigned char mac[DHCP_HLEN_ETHER];
+	int signals[] = { SIGTERM, SIGINT, SIGQUIT };
+	int i;
 
 	if (0 != parce_cmd_options(argc, argv))
 		return -1;
@@ -217,6 +265,15 @@ int main(int argc, char* argv[])
 
 	srand(time(NULL));
 
+	/* set up signal handler */
+	for (i = 0; i < (sizeof(signals) / sizeof(int)); i++) {
+		if (SIG_ERR == signal(signals[i], signal_handler)) {
+			log_err("can not set up signal handler: %s",
+					strerror(errno));
+			return -1;
+		}
+	}
+
 	sock_recv = create_recv_socket();
 	sock_send = create_send_socket();
 	if (-1 == sock_recv || -1 == sock_send)
@@ -230,6 +287,13 @@ int main(int argc, char* argv[])
 	if (-1 == (ifindex = get_iface_index(sock_send, opts.ifname)))
 		return -1;
 
+	if (!opts.no_promisc) {
+		if (-1 == (promisc = set_promisc_mode(sock_recv, opts.ifname,
+						1))) {
+			return -1;
+		}
+	}
+
 	while (1) {
 		renew_all_leases(sock_send, sock_recv);
 
@@ -238,9 +302,7 @@ int main(int argc, char* argv[])
 				request_retries);
 	}
 
-	ls_free_all_leases();
-	close(sock_recv);
-	close(sock_send);
+	shutdown_app();
 
 	return 0;
 }
