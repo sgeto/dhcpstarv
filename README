@@ -1,0 +1,81 @@
+1. WHAT IS DHCPSTARV?
+~~~~~~~~~~~~~~~~~~~~~
+
+DHCP starvation is attacking a DHCP server by sending a lot of requests to it.
+This lead to server's address pool exhausting after which DHCP server is not
+able to respond clients and give them new leases.
+
+dhcpstarv is tool that implements DHCP starvation attack. It requests DHCP
+leases on specified interface, save them and renew on regular basis.
+
+
+2. WHAT IS DHCPSTARV FOR?
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When a rogue DHCP server appear in network with DHCP infrastructure some clients
+can get wrong network settings. Those rogue servers can be switched by users by
+accident. The only solution to issue is to disconnect such server from network.
+But it takes a lot of time to discover rogue server if network is complicated,
+i.e. there are many network devices in it. As a temporary solution you can
+attack rogue DHCP server until find and disconnect it from network.
+
+Do not use this tool for abuse. This tool was made not for such things. You are
+warned.
+
+
+3. INSTALLATION
+~~~~~~~~~~~~~~~
+
+Change current directory to where package was unpacked and execute these
+commands:
+
+	./configure
+	make
+	make install
+
+You must login as root to run `make install'. Alternatively you can install to
+your own directory:
+
+	./configure --prefix=/path/to/my/dir
+	make
+	make install
+
+Anyway you must login as root to run dhcpstarv.
+
+For additional options see INSTALL document in this directory.
+
+
+4. USAGE
+~~~~~~~~
+
+To attack DHCP server on interface `eth0' run:
+
+	dhcpstarv -i eth0
+
+If there is a legal DHCP server in network and you don't want to influence it
+use `-e' option:
+
+	dhcpstarv -i eth0 -e 192.168.1.1
+
+where 192.168.1.1 is server ID which server put in replies. You can discover it
+by running dhcpstarv and interrupt execution by pressing `C-c' (control key and
+C) when first lease was reserved (dhcpstarv print information about server from
+which options was taken).
+
+You will see when servers shut down: you will not receive addresses more. While
+running dhcpstarv will renew leases. If you interrupt DHCP servers will allocate
+leases again after some time.
+
+See man page for full list of options.
+
+
+5. COPYRIGHT AND FEEDBACK
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This software is copyrighted under GNU General Public Licence v3. See COPYING
+document in this directory for full version of licence.
+
+Feedback and bug reports are acceptable at <ddo@mgn.ru>.
+
+Copyright (c) 2007 Dmitry Davletbaev <ddo@mgn.ru>.
+

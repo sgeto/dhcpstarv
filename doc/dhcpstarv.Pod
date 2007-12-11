@@ -1,0 +1,64 @@
+=pod
+
+=head1 NAME
+
+dhcpstarv - DHCP starvation attack.
+
+=head1 SYNOPSIS
+
+dhcpstarv -h
+
+dhcpstarv [-ev] -i IFNAME
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<-e>, B<--exclude>=I<ADDRESS>
+
+Ignore replies from server with IP address I<ADDRESS>. This must be valid IP
+address DHCP server include in replies as server ID. Usually this is a primary
+IP address of interface which is connected to client's network segment.
+
+=item B<-h>, B<--help>
+
+Print help and exit.
+
+=item B<-i>, B<--ifname>=I<IFNAME>
+
+Send requests and receive responses on network interface I<IFNAME>.
+
+=item B<-v>, B<--verbose>
+
+Print verbose messages.
+
+=back
+
+=head1 DESCRIPTION
+
+DHCP starvation is attacking a DHCP server by sending a lot of requests to it.
+This lead to server's address pool exhausting after which DHCP server is not
+able to respond clients and give them new leases.
+
+B<dhcpstarv> is tool that implements DHCP starvation attack. It requests DHCP
+leases on specified interface, save them and renew on regular basis.
+
+When a rogue DHCP server appear in network with DHCP infrastructure some clients
+can get wrong network settings. Those rogue servers can be switched by users by
+accident. The only solution to issue is to disconnect such server from network.
+But it takes a lot of time to discover rogue server if network is complicated,
+i.e. there are many network devices in it. As a temporary solution you can
+attack rogue DHCP server until find and disconnect it from network.
+
+=head1 COPYRIGHT
+
+Copyright (C) 2007 Dmitry Davletbaev
+
+This program is licenced under GNU General Public License version 3.
+
+This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you
+are welcome to redistribute it under certain conditions; see
+<http://www.gnu.org/licenses/> for details.
+
+=cut
+

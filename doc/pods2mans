@@ -1,0 +1,5 @@
+#!/bin/sh
+
+pod2man -n dhcpstarv -c 'dhcpstarv manual' -r 'version 0.1.0' \
+	dhcpstarv.Pod dhcpstarv.1
+
