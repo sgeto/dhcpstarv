@@ -42,7 +42,7 @@ your own directory:
 
 Anyway you must login as root to run dhcpstarv.
 
-For additional options see INSTALL document in this directory.
+For additional options see INSTALL document in source directory.
 
 
 4. USAGE
@@ -73,7 +73,7 @@ See man page for full list of options.
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This software is copyrighted under GNU General Public Licence v3. See COPYING
-document in this directory for full version of licence.
+document in source directory for full version of licence.
 
 Feedback and bug reports are acceptable at <ddo_@users.sourceforge.net>.
 
