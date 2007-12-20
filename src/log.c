@@ -35,7 +35,7 @@ static const char timefmt[] = "%T %D: ";
 void log_info(const char* format, ...)
 {
 	va_list ap;
-	char time_format[1024];
+	char time_format[LOG_STR_BUFFER_SIZE];
 	time_t now = time(NULL);
 
 	strftime(time_format, sizeof(time_format), timefmt, localtime(&now));
@@ -53,7 +53,7 @@ void log_info(const char* format, ...)
 void log_err(const char* format, ...)
 {
 	va_list ap;
-	char time_format[1024];
+	char time_format[LOG_STR_BUFFER_SIZE];
 	time_t now = time(NULL);
 
 	strftime(time_format, sizeof(time_format), timefmt, localtime(&now));
@@ -71,7 +71,7 @@ void log_err(const char* format, ...)
 void log_verbose(const char* format, ...)
 {
 	va_list ap;
-	char time_format[1024];
+	char time_format[LOG_STR_BUFFER_SIZE];
 	time_t now = time(NULL);
 
 	if (opts.verbose) {

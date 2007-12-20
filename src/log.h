@@ -20,6 +20,8 @@
 #ifndef LOGGING_FUNCTIONS
 #define LOGGING_FUNCTIONS
 
+#define LOG_STR_BUFFER_SIZE			1024
+
 void log_info(const char* format, ...);
 void log_err(const char* format, ...);
 void log_verbose(const char* format, ...);
