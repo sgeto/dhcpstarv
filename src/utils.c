@@ -71,7 +71,7 @@ const char* mac_to_str(const unsigned char* mac)
 	int i;
 	char tmp[50];
 
-	/* TODO: assert on `mac' */
+	assert(mac);
 
 	memset(tmp, 0, sizeof(tmp));
 	memset(tmp_mac, 0, sizeof(tmp_mac));
