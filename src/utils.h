@@ -23,6 +23,7 @@
 void init_addr(struct sockaddr_in* addr, const char* ip, unsigned short port);
 unsigned int strip_to_int(const char* ip);
 const char* mac_to_str(const unsigned char* mac);
+int str_to_mac(const char* str, unsigned char* mac, size_t macsize);
 const char* get_ip_str(unsigned int ip);
 
 #endif /* UTILS_FUNCTIONS */

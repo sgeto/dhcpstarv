@@ -1,3 +1,7 @@
+04.03.2008 Dmity Davletbaev <ddo_@users.sourceforge.net>
+
+	* feature: `--dstmac' option added.
+
 11.12.2007 Dmity Davletbaev <ddo_@users.sourceforge.net>
 
 	* feature: set network interface to promiscuous mode (default). Add

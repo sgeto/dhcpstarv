@@ -62,6 +62,7 @@ int send_recv_dhcp(int sock_send,
 		struct dhcp_packet* dhcp,
 		size_t dhcplen,
 		const struct sockaddr_ll* dstaddr,
+		const unsigned char* dstmac,
 		struct dhcp_lease* lease,
 		long timeout)
 {
@@ -75,8 +76,17 @@ int send_recv_dhcp(int sock_send,
 	assert(dstaddr);
 	assert(lease);
 
-	bufflen = init_udp_packet(buffer, sizeof(buffer), dhcp, dhcplen, ifmac,
-			0, htons(68), brd_mac, 0xffffffff, htons(67));
+	bufflen = init_udp_packet(buffer,
+			sizeof(buffer),
+			dhcp,
+			dhcplen,
+			ifmac,
+			0,
+			htons(68),
+			dstmac ? dstmac : brd_mac,
+			0xffffffff,
+			htons(67));
+
 	if (bufflen == -1) {
 		log_err("can not initialize packet to send");
 		return -1;
@@ -103,6 +113,7 @@ int send_recv_dhcp(int sock_send,
 int request_lease(int sock_send,
 		int sock_recv,
 		const unsigned char* mac,
+		const unsigned char* dstmac,
 		long timeout,
 		int retries)
 {
@@ -131,7 +142,7 @@ int request_lease(int sock_send,
 		}
 
 		ret = send_recv_dhcp(sock_send, sock_recv, &dhcp, dhcplen,
-				&lladdr, lease, timeout);
+				&lladdr, dstmac, lease, timeout);
 
 		if (ret == 0) {
 			ls_change_lease(lease, &dhcp);
@@ -158,7 +169,7 @@ int request_lease(int sock_send,
 		}
 
 		ret = send_recv_dhcp(sock_send, sock_recv, &dhcp, dhcplen,
-				&lladdr, lease, timeout);
+				&lladdr, dstmac, lease, timeout);
 		if (ret == 0) {
 			break;
 		} else if (ret > 0 && i >= retries) {
@@ -211,6 +222,7 @@ int request_lease(int sock_send,
 int renew_lease(int sock_send,
 		int sock_recv,
 		struct dhcp_lease* lease,
+		const unsigned char* dstmac,
 		long timeout,
 		int retries)
 {
@@ -232,7 +244,7 @@ int renew_lease(int sock_send,
 			return -1;
 		}
 		if (0 == send_recv_dhcp(sock_send, sock_recv, &dhcp, dhcplen,
-					&lladdr, lease, timeout)) {
+					&lladdr, dstmac, lease, timeout)) {
 			break;
 		} else if (i >= retries) {
 			log_verbose("did not received DHCP reply for "

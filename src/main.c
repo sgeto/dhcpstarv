@@ -95,7 +95,10 @@ void renew_all_leases(int sock_send, int sock_recv)
 			goto NextLease;
 
 		if ((now - lease->last_updated) > (renewal_time / 3)) {
-			if (0 == renew_lease(sock_send, sock_recv, lease,
+			if (0 == renew_lease(sock_send,
+						sock_recv,
+						lease,
+						opts.dstmac,
 						request_timeout,
 						request_retries))
 				renewed_count++;
@@ -176,8 +179,10 @@ void print_help()
 	printf("%s - DHCP starvation utility.\nversion %s\n\n"
 			"Usage:\n"
 			"\t%s -h\n\n"
-			"\t%s [-epv] -i IFNAME\n\n"
+			"\t%s [-epv] [-d MAC] -i IFNAME\n\n"
 			"Options:\n"
+			"\t-d, --dstmac=MAC\n"
+			"\t\tUse MAC for requests instead of broadcast address.\n"
 			"\t-e, --exclude=ADDRESS\n"
 			"\t\tIgnore replies from server with address ADDRESS.\n"
 			"\t-h, --help\n"
@@ -197,19 +202,28 @@ void print_help()
 int parce_cmd_options(int argc, char* argv[])
 {
 	struct option long_opts[] = {
+		{ "dstmac", required_argument, NULL, 'd' },
 		{ "exclude", required_argument, NULL, 'e' },
 		{ "iface", required_argument, NULL, 'i' },
 		{ "no-promisc", no_argument, NULL, 'p' },
 		{ "verbose", no_argument, NULL, 'v' },
-		{ "help", no_argument, NULL, 'h' }
+		{ "help", no_argument, NULL, 'h' },
+		{ NULL, 0, NULL, 0 },
 	};
 	int optind = 0, opt;
 
 	memset(&opts, 0, sizeof(opts));
 
-	while (-1 != (opt = getopt_long(argc, argv, "e:i:hpv", long_opts, &optind))) {
+	while (-1 != (opt = getopt_long(argc, argv, "d:e:i:hpv", long_opts, &optind))) {
 		switch (opt) {
 		case 0:
+			break;
+		case 'd':
+			opts.dstmac = (unsigned char*) malloc(DHCP_HLEN_ETHER);
+			if (str_to_mac(optarg, opts.dstmac, DHCP_HLEN_ETHER)) {
+				log_err("bad destination MAC address %s", optarg);
+				return -1;
+			}
 			break;
 		case 'e':
 			if (0 == (opts.exclude_server = strip_to_int(optarg))) {
@@ -248,19 +262,21 @@ int parce_cmd_options(int argc, char* argv[])
  */
 int main(int argc, char* argv[])
 {
+	int ret = -1;
 	unsigned char mac[DHCP_HLEN_ETHER];
 	int signals[] = { SIGTERM, SIGINT, SIGQUIT };
 	int i;
 
 	if (0 != parce_cmd_options(argc, argv))
-		return -1;
+		goto Out;
 
 	if (opts.help || opts.verbose)
 		print_notice();
 
 	if (opts.help) {
 		print_help();
-		exit(0);
+		ret = 0;
+		goto Out;
 	}
 
 	srand(time(NULL));
@@ -270,27 +286,27 @@ int main(int argc, char* argv[])
 		if (SIG_ERR == signal(signals[i], signal_handler)) {
 			log_err("can not set up signal handler: %s",
 					strerror(errno));
-			return -1;
+			goto Out;
 		}
 	}
 
 	sock_recv = create_recv_socket();
 	sock_send = create_send_socket();
 	if (-1 == sock_recv || -1 == sock_send)
-		return -1;
+		goto Out;
 
 	if (-1 == get_iface_hwaddr(sock_send, opts.ifname, ifmac,
 				sizeof(ifmac))) {
-		return -1;
+		goto Out;
 	}
 
 	if (-1 == (ifindex = get_iface_index(sock_send, opts.ifname)))
-		return -1;
+		goto Out;
 
 	if (!opts.no_promisc) {
 		if (-1 == (promisc = set_promisc_mode(sock_recv, opts.ifname,
 						1))) {
-			return -1;
+			goto Out;
 		}
 	}
 
@@ -298,12 +314,16 @@ int main(int argc, char* argv[])
 		renew_all_leases(sock_send, sock_recv);
 
 		generate_mac(mac);
-		request_lease(sock_send, sock_recv, mac, request_timeout,
-				request_retries);
+		request_lease(sock_send, sock_recv, mac, opts.dstmac,
+				request_timeout, request_retries);
 	}
 
 	shutdown_app();
+	ret = 0;
+Out:
+	if (opts.dstmac)
+		free(opts.dstmac);
 
-	return 0;
+	return ret;
 }
 

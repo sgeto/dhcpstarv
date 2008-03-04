@@ -71,6 +71,8 @@ const char* mac_to_str(const unsigned char* mac)
 	int i;
 	char tmp[50];
 
+	/* TODO: assert on `mac' */
+
 	memset(tmp, 0, sizeof(tmp));
 	memset(tmp_mac, 0, sizeof(tmp_mac));
 	for (i = 0; i < DHCP_HLEN_ETHER; i++) {
@@ -79,6 +81,36 @@ const char* mac_to_str(const unsigned char* mac)
 	}
 
 	return tmp_mac;
+}
+
+/*
+ * Convert string with MAC (for example `00:14:78:04:de:e0' to byte array.
+ * Return 0 if successful or -1 if bad string format or not enough room in
+ * `mac'.
+ */
+int str_to_mac(const char* str, unsigned char* mac, size_t macsize)
+{
+	unsigned char tmpmac[6];
+	int enough = (macsize >= sizeof(tmpmac));
+	int converted;
+
+	assert(str);
+	assert(mac);
+
+	converted = sscanf(str, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx",
+			&tmpmac[0],
+			&tmpmac[1],
+			&tmpmac[2],
+			&tmpmac[3],
+			&tmpmac[4],
+			&tmpmac[5]);
+	if (converted != sizeof(tmpmac))
+		return -1;
+
+	memset(mac, 0, macsize);
+	memcpy(mac, tmpmac, enough ? sizeof(tmpmac) : macsize);
+
+	return !enough;
 }
 
 /*

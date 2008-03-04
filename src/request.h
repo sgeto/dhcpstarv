@@ -25,11 +25,13 @@ struct dhcp_lease;
 int request_lease(int sock_send,
 		int sock_recv,
 		const unsigned char* mac,
+		const unsigned char* dstmac,
 		long timeout,
 		int retries);
 int renew_lease(int sock_send,
 		int sock_recv,
 		struct dhcp_lease* lease,
+		const unsigned char* dstmac,
 		long timeout,
 		int retries);
 

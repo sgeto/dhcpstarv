@@ -129,16 +129,20 @@
 .\" ========================================================================
 .\"
 .IX Title "dhcpstarv 1"
-.TH dhcpstarv 1 "2007-12-11" "version 0.1.0" "dhcpstarv manual"
+.TH dhcpstarv 1 "2008-03-04" "version 0.1.0" "dhcpstarv manual"
 .SH "NAME"
 dhcpstarv \- DHCP starvation attack.
 .SH "SYNOPSIS"
 .IX Header "SYNOPSIS"
 dhcpstarv \-h
 .PP
-dhcpstarv [\-epv] \-i \s-1IFNAME\s0
+dhcpstarv [\-epv] [\-d \s-1MAC\s0] \-i \s-1IFNAME\s0
 .SH "OPTIONS"
 .IX Header "OPTIONS"
+.IP "\fB\-d\fR, \fB\-\-dstmac\fR=\fI\s-1MAC\s0\fR" 8
+.IX Item "-d, --dstmac=MAC"
+Use \fI\s-1MAC\s0\fR as destination hardware address for \s-1DHCP\s0 requests. Default is to use
+broadcast address.
 .IP "\fB\-e\fR, \fB\-\-exclude\fR=\fI\s-1ADDRESS\s0\fR" 8
 .IX Item "-e, --exclude=ADDRESS"
 Ignore replies from server with \s-1IP\s0 address \fI\s-1ADDRESS\s0\fR. This must be valid \s-1IP\s0

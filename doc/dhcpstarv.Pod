@@ -8,11 +8,16 @@ dhcpstarv - DHCP starvation attack.
 
 dhcpstarv -h
 
-dhcpstarv [-epv] -i IFNAME
+dhcpstarv [-epv] [-d MAC] -i IFNAME
 
 =head1 OPTIONS
 
 =over 8
+
+=item B<-d>, B<--dstmac>=I<MAC>
+
+Use I<MAC> as destination hardware address for DHCP requests. Default is to use
+broadcast address.
 
 =item B<-e>, B<--exclude>=I<ADDRESS>
 
