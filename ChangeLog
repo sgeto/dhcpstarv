@@ -1,3 +1,18 @@
+06.01.2009 Dmity Davletbaev <ddo_@users.sourceforge.net>
+
+	* bugfix: block when selecting and reading on receiving socket (less CPU
+	time consumption).
+
+	* bugfix: receive only IP packets.
+
+	* feature: --debug option for developers.
+
+	* bugfix: fix requests number output value.
+
+	* bugfix: exit request or renew lease loop when critical error occurred
+	so we don't consume a lot of CPU time (for example when network
+	interface is down).
+
 04.03.2008 Dmity Davletbaev <ddo_@users.sourceforge.net>
 
 	* feature: `--dstmac' option added.

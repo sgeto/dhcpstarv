@@ -34,6 +34,7 @@ struct app_options {
 	int no_promisc;
 	int verbose;
 	unsigned char* dstmac;
+	int debug;
 };
 
 extern struct app_options opts;

@@ -25,6 +25,7 @@
 void log_info(const char* format, ...);
 void log_err(const char* format, ...);
 void log_verbose(const char* format, ...);
+void log_debug(const char* format, ...);
 
 #endif /* LOGGING_FUNCTIONS */
 

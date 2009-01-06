@@ -65,7 +65,7 @@ static int promisc = 0;
  * Request time and retry count (DHCPDISCOVER and DHCPREQUEST, in seconds).
  * These values should be kept small to reduce overall run time.
  */ 
-static const int request_retries = 2;
+static const int request_retries = 3;
 
 static const int request_timeout = 2;
 
@@ -78,6 +78,7 @@ void renew_all_leases(int sock_send, int sock_recv)
 	struct dhcp_lease* lease = ls_get_first_lease();
 	uint32_t now, renewal_time;
 	int renewed_count = 0;
+	int ret;
 
 	assert(sock_send != -1);
 	assert(sock_recv != -1);
@@ -95,13 +96,20 @@ void renew_all_leases(int sock_send, int sock_recv)
 			goto NextLease;
 
 		if ((now - lease->last_updated) > (renewal_time / 3)) {
-			if (0 == renew_lease(sock_send,
+			ret = renew_lease(sock_send,
 						sock_recv,
 						lease,
 						opts.dstmac,
 						request_timeout,
-						request_retries))
+						request_retries);
+
+			if (ret == 0) {
 				renewed_count++;
+			} else if (ret < 0) {
+				/* critical error occurred */
+				break;
+			}
+
 			if (renewed_count > max_renew_leases)
 				break;
 		}
@@ -179,10 +187,12 @@ void print_help()
 	printf("%s - DHCP starvation utility.\nversion %s\n\n"
 			"Usage:\n"
 			"\t%s -h\n\n"
-			"\t%s [-epv] [-d MAC] -i IFNAME\n\n"
+			"\t%s [-epv] [-d MAC] [--debug] -i IFNAME\n\n"
 			"Options:\n"
 			"\t-d, --dstmac=MAC\n"
 			"\t\tUse MAC for requests instead of broadcast address.\n"
+			"\t--debug\n"
+			"\t\tOutput debug messages.\n"
 			"\t-e, --exclude=ADDRESS\n"
 			"\t\tIgnore replies from server with address ADDRESS.\n"
 			"\t-h, --help\n"
@@ -202,6 +212,7 @@ void print_help()
 int parce_cmd_options(int argc, char* argv[])
 {
 	struct option long_opts[] = {
+		{ "debug", no_argument, NULL, 129 },
 		{ "dstmac", required_argument, NULL, 'd' },
 		{ "exclude", required_argument, NULL, 'e' },
 		{ "iface", required_argument, NULL, 'i' },
@@ -243,6 +254,9 @@ int parce_cmd_options(int argc, char* argv[])
 			break;
 		case 'p':
 			opts.no_promisc = 1;
+			break;
+		case 129:
+			opts.debug ++;
 			break;
 		case '?':
 			return -1;
@@ -314,8 +328,12 @@ int main(int argc, char* argv[])
 		renew_all_leases(sock_send, sock_recv);
 
 		generate_mac(mac);
-		request_lease(sock_send, sock_recv, mac, opts.dstmac,
-				request_timeout, request_retries);
+
+		if (0 > request_lease(sock_send, sock_recv, mac, opts.dstmac,
+				request_timeout, request_retries)) {
+			/* critical error occurred */
+			break;
+		}
 	}
 
 	shutdown_app();

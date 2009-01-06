@@ -86,3 +86,25 @@ void log_verbose(const char* format, ...)
 	}
 }
 
+/*
+ * Log debug message on stderr.
+ */
+void log_debug(const char* format, ...)
+{
+	va_list ap;
+	char time_format[LOG_STR_BUFFER_SIZE];
+	time_t now = time(NULL);
+
+	if (opts.debug) {
+		strftime(time_format, sizeof(time_format), timefmt,
+				localtime(&now));
+		strncat(time_format, "(debug) ", sizeof(time_format));
+		strncat(time_format, format, sizeof(time_format));
+
+		va_start(ap, format);
+		vfprintf(stderr, time_format, ap);
+		fprintf(stderr, "\n");
+		va_end(ap);
+	}
+}
+

@@ -25,6 +25,7 @@
 #include <assert.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
+#include <netpacket/packet.h>
 #include <linux/if_ether.h>
 
 #include "sock.h"
@@ -65,9 +66,11 @@ int create_send_socket()
 int create_recv_socket()
 {
 	int sock = -1;
-	int sockopt, flags;
+	int sockopt;
+	// int flags;
 
-	if (-1 == (sock = socket(PF_PACKET, SOCK_DGRAM, htons(ETH_P_ALL)))) {
+	// if (-1 == (sock = socket(PF_PACKET, SOCK_DGRAM, htons(ETH_P_ALL)))) {
+	if (-1 == (sock = socket(PF_PACKET, SOCK_DGRAM, htons(ETH_P_IP)))) {
 		log_err("Error: can not create recv socket (%s)",
 				strerror(errno));
 		return -1;
@@ -83,6 +86,7 @@ int create_recv_socket()
 	}
 
 	/* FIXME: do we realy need nonblocking socket? */
+	/*
 	if (-1 == (flags = fcntl(sock, F_GETFL))) {
 		log_err("can not get socket flags (%s)", strerror(errno));
 		close(sock);
@@ -95,6 +99,7 @@ int create_recv_socket()
 			return -1;
 		}
 	}
+	*/
 
 	return sock;
 }
@@ -127,7 +132,11 @@ int read_dhcp_from_socket(int sock,
 		FD_SET(sock, &rfds);
 		memset(&read_timeout, 0, sizeof(read_timeout));
 		read_timeout.tv_sec = timeout;
+
+		log_debug("'select' on receiving socket started");
 		select_ret = select(sock + 1, &rfds, NULL, NULL, &read_timeout);
+		log_debug("'select' on receiving socket returned");
+
 		if (select_ret == -1) {
 			ret = -2;
 			goto Out;
@@ -135,6 +144,9 @@ int read_dhcp_from_socket(int sock,
 			goto Out;
 		} else {
 			read_bytes = read(sock, buffer, sizeof(buffer));
+
+			log_debug("%d bytes read from socket", read_bytes);
+
 			if (0 == dhcp_msg(buffer, sizeof(buffer), &recv_dhcp) &&
 						recv_dhcp->op == DHCP_OP_BOOTREPLY &&
 						recv_dhcp->xid == xid) {

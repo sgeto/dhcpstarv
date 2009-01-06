@@ -108,7 +108,8 @@ int send_recv_dhcp(int sock_send,
 
 
 /*
- * Request lease from DHCP server. Return 0 if get DHCPACK.
+ * Request lease from DHCP server. Return 0 if get DHCPACK, < 0 if uncorrectable
+ * error orruced and caller should exit, > 0 otherwise.
  */
 int request_lease(int sock_send,
 		int sock_recv,
@@ -135,7 +136,7 @@ int request_lease(int sock_send,
 	init_ll_addr(&lladdr);
 
 	/* DHCPDISCOVER */
-	for (i = 0; ; i++) {
+	for (i = 1; ; i++) {
 		if (-1 == (dhcplen = dhcp_make_discover(&dhcp, lease, 1))) {
 			log_err("can not create DHCPDISCOVER");
 			return -1;
@@ -152,7 +153,7 @@ int request_lease(int sock_send,
 					"lease request (DHCPDISCOVER) "
 					"in %d retries",
 					retries);
-			return -1;
+			return 1;
 		} else if (ret < 0) {
 			return -1;
 		}
@@ -162,7 +163,7 @@ int request_lease(int sock_send,
 #endif
 
 	/* DHCPREQUEST */
-	for (i = 0; ; i++) {
+	for (i = 1; ; i++) {
 		if (-1 == (dhcplen = dhcp_make_request(&dhcp, lease, 1))) {
 			log_err("can not create DHCPREQUEST");
 			return -1;
@@ -177,7 +178,7 @@ int request_lease(int sock_send,
 					"lease request (DHCPREQUEST) "
 					"in %d retries",
 					retries);
-			return -1;
+			return 1;
 		} else if (ret < 0) {
 			return -1;
 		}
@@ -189,7 +190,7 @@ int request_lease(int sock_send,
 	if (0 != dhcp_get_option(&dhcp, DHCP_OPT_MSGTYPE, &msgtype,
 				sizeof(msgtype), NULL)) {
 		log_err("no message type option in DHCP reply");
-		return -1;
+		return 1;
 	}
 
 	if (msgtype == DHCP_MSGTYPE_ACK) {
@@ -205,19 +206,20 @@ int request_lease(int sock_send,
 				"for %s from %s",
 				mac_to_str(lease->mac),
 				get_ip_str(lease->server_id));
-		return -1;
+		return 1;
 	} else {
 		log_info("got %d reply when requesting address "
 				"for %s from %s",
 				(int) msgtype,
 				mac_to_str(lease->mac),
 				get_ip_str(lease->server_id));
-		return -1;
+		return 1;
 	}
 }
 
 /*
- * Renew lease. Return 0 if successful.
+ * Renew lease. Return 0 if successful. Return 0 if get DHCPACK, < 0 if
+ * uncorrectable error orruced and caller should exit, > 0 otherwise.
  */
 int renew_lease(int sock_send,
 		int sock_recv,
@@ -231,6 +233,7 @@ int renew_lease(int sock_send,
 	size_t dhcplen;
 	unsigned char msgtype;
 	struct sockaddr_ll lladdr;
+	int ret;
 
 	assert(sock_send != -1);
 	assert(sock_recv != -1);
@@ -238,19 +241,23 @@ int renew_lease(int sock_send,
 
 	init_ll_addr(&lladdr);
 
-	for (i = 0; ; i++) {
+	for (i = 1; ; i++) {
 		if (-1 == (dhcplen = dhcp_make_renew(&dhcp, lease, 1))) {
 			log_err("can not create DHCPRENEW");
 			return -1;
 		}
-		if (0 == send_recv_dhcp(sock_send, sock_recv, &dhcp, dhcplen,
-					&lladdr, dstmac, lease, timeout)) {
+
+		ret = send_recv_dhcp(sock_send, sock_recv, &dhcp, dhcplen,
+					&lladdr, dstmac, lease, timeout);
+		if (ret == 0) {
 			break;
-		} else if (i >= retries) {
+		} else if (ret > 0 && i >= retries) {
 			log_verbose("did not received DHCP reply for "
 					"lease renew (DHCPREQUEST) "
 					"in %d retries",
 					retries);
+			return 1;
+		} else if (ret < 0) {
 			return -1;
 		}
 	}
@@ -275,13 +282,13 @@ int renew_lease(int sock_send,
 		log_verbose("got DHCPNACK reply when renewing lease with "
 				"address %s",
 				get_ip_str(lease->client_addr));
-		return -1;
+		return 1;
 	} else {
 		log_verbose("got %d reply when renewing lease with "
 				"address %s",
 				(int) msgtype,
 				get_ip_str(lease->client_addr));
-		return -1;
+		return 1;
 	}
 }
 
