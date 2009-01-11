@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.61)
-AC_INIT([dhcpstarv], [0.1.1], [ddo_@users.sourceforge.net])
+AC_INIT([dhcpstarv], [0.2.1], [ddo_@users.sourceforge.net])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([src/main.c])
 AC_CONFIG_HEADER([config.h])
