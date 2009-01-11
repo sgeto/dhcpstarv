@@ -1,3 +1,7 @@
+09.01.2009 Dmity Davletbaev <ddo_@users.sourceforge.net>
+
+	* feature: updated to version 0.1.1.
+
 06.01.2009 Dmity Davletbaev <ddo_@users.sourceforge.net>
 
 	* bugfix: block when selecting and reading on receiving socket (less CPU
