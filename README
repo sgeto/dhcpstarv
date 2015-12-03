@@ -68,6 +68,19 @@ leases again after some time.
 
 See man page for full list of options.
 
+5. DOCUMENTATION
+~~~~~~~~~~~~~~~~
+
+The dhcpstarv tool is implemented according to the following RFCs:
+
+	rfc1533 - DHCP Options and BOOTP Vendor Extensions
+
+	rfc1542 - Clarifications and Extensions for the Bootstrap Protocol
+
+	rfc2131 - Dynamic Host Configuration Protocol
+
+	rfc3046 - DHCP Relay Agent Information Option
+
 
 5. COPYRIGHT AND FEEDBACK
 ~~~~~~~~~~~~~~~~~~~~~~~~~
