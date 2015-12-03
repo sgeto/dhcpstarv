@@ -105,12 +105,10 @@ void ls_free_all_leases()
 void ls_change_lease(struct dhcp_lease* lease, const struct dhcp_packet* dhcp)
 {
 	unsigned char msgtype;
-	size_t optlen;
 
 	assert(lease);
 	assert(dhcp);
 
-	optlen = sizeof(msgtype);
 	if (0 != dhcp_get_option(dhcp, DHCP_OPT_MSGTYPE, &msgtype,
 				sizeof(msgtype), NULL)) {
 		log_err("no DHCP message type in reply");

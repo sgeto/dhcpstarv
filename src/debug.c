@@ -94,7 +94,7 @@ void print_opt_description(int code, unsigned char* optvalue, size_t len)
 				htonl(*((uint32_t*) optvalue)));
 		break;
 	default:
-		printf("\t\tcode: %u, size: %u, value:", code, len);
+		printf("\t\tcode: %u, size: %lu, value:", code, (unsigned long) len);
 		for (i = 0; i < len; i++)
 			printf(" 0x%02x", optvalue[i]);
 		printf("\n");
