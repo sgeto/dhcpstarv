@@ -1,33 +1,22 @@
 # Object files
 *.o
-*.ko
-*.obj
-*.elf
 
-# Precompiled Headers
-*.gch
-*.pch
+# Autotools
+autom4te.cache
+build-aux
+aclocal.m4
+configure
+config.log
+config.status
+Makefile
+Makefile.in
+src/*.o
+src/.dirstamp
+src/config.h
+src/config.h.in
+src/stamp-h1
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
-# Debug files
-*.dSYM/
-*.su
+# The Rest
+dhcpstarv
+dhcpstarv-*.tar.gz
+dhcpstarv-0.?.?
