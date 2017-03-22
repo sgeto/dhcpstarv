@@ -69,6 +69,8 @@ attack rogue DHCP server until find and disconnect it from network.
 
 Copyright (C) 2007 Dmitry Davletbaev
 
+Copyright (C) 2017 Ali Abdulkadir
+
 This program is licenced under GNU General Public License version 3.
 
 This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you
