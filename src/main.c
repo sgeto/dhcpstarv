@@ -172,12 +172,13 @@ void signal_handler(int signum)
  */
 void print_notice()
 {
-	printf("Copyright (C) 2007 Dmitry Davletbaev\n"
-"Copyright (C) 2017 Ali Abdulkadir\n\n"
-			"This program comes with ABSOLUTELY NO WARRANTY.\n"
-			"This is free software, and you are welcome to "
-			"redistribute it under\ncertain conditions; see "
-			"<http://www.gnu.org/licenses/> for details.\n\n");
+	printf("%s - DHCP starvation utility %s\n\n"
+			"Copyright (C) 2017 Dmitry Davletbaev and Ali Abdulkadir\n"
+			"License GPLv3+: GNU GPL version 3 or later\n"
+			"<http://gnu.org/licenses/gpl.html>\n"
+			"This is free software: you are free to change and redistribute it.\n"
+			"There is NO WARRANTY, to the extent permitted by law.\n\n",
+			PACKAGE_NAME, PACKAGE_VERSION);
 }
 
 /*
@@ -185,8 +186,7 @@ void print_notice()
  */
 void print_help()
 {
-	printf("%s - DHCP starvation utility.\nversion %s\n\n"
-			"Usage:\n"
+	printf("Usage:\n"
 			"\t%s [-epv] [-d MAC] [--debug] -i IFNAME\n\n"
 			"Options:\n"
 			"\t-d, --dstmac=MAC\n"
@@ -202,8 +202,9 @@ void print_help()
 			"\t-p, --no-promisc\n"
 			"\t\tDo not set network interface to promiscuous mode.\n"
 			"\t-v, --verbose\n"
-			"\t\tVerbose output.\n",
-			PACKAGE_NAME, PACKAGE_VERSION, PACKAGE_NAME);
+			"\t\tVerbose output.\n\n"
+			"See the man page for a full list of options.\n",
+			PACKAGE_NAME);
 }
 
 /*
