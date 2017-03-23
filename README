@@ -68,27 +68,25 @@ leases again after some time.
 
 See man page for full list of options.
 
-5. DOCUMENTATION
-~~~~~~~~~~~~~~~~
-
-The dhcpstarv tool is implemented according to the following RFCs:
-
-	rfc1533 - DHCP Options and BOOTP Vendor Extensions
-
-	rfc1542 - Clarifications and Extensions for the Bootstrap Protocol
-
-	rfc2131 - Dynamic Host Configuration Protocol
-
-	rfc3046 - DHCP Relay Agent Information Option
+dhcpstarv is implemented according to the following RFCs:
+ 
+  rfc1533 - DHCP Options and BOOTP Vendor Extensions
+ 
+  rfc1542 - Clarifications and Extensions for the Bootstrap Protocol
+ 
+  rfc2131 - Dynamic Host Configuration Protocol
+ 
+  rfc3046 - DHCP Relay Agent Information Option
 
 
 5. COPYRIGHT AND FEEDBACK
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This software is copyrighted under GNU General Public Licence v3. See COPYING
-document in source directory for full version of licence.
+This software is copyrighted under GNU General Public License v3. See COPYING
+document in source directory for full version of license.
 
-Feedback and bug reports are acceptable at <ddomgn@gmail.com>.
+Feedback and bug reports are acceptable at https://github.com/sgeto/dhcpstarv/issues
 
-Copyright (c) 2007 Dmitry Davletbaev <ddomgn@gmail.com>.
+Copyright (c) 2007 Dmitry Davletbaev <ddomgn@gmail.com>
 
+Copyright (c) 2017 Ali Abdulkadir <autostart.ini@gmail.com>

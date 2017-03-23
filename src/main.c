@@ -65,9 +65,9 @@ static int promisc = 0;
  * Request time and retry count (DHCPDISCOVER and DHCPREQUEST, in seconds).
  * These values should be kept small to reduce overall run time.
  */ 
-static const int request_retries = 3;
+static const int request_retries = 2;
 
-static const int request_timeout = 2;
+static const int request_timeout = 1;
 
 
 /*
@@ -173,6 +173,7 @@ void signal_handler(int signum)
 void print_notice()
 {
 	printf("Copyright (C) 2007 Dmitry Davletbaev\n"
+"Copyright (C) 2017 Ali Abdulkadir\n\n"
 			"This program comes with ABSOLUTELY NO WARRANTY.\n"
 			"This is free software, and you are welcome to "
 			"redistribute it under\ncertain conditions; see "
@@ -186,7 +187,6 @@ void print_help()
 {
 	printf("%s - DHCP starvation utility.\nversion %s\n\n"
 			"Usage:\n"
-			"\t%s -h\n\n"
 			"\t%s [-epv] [-d MAC] [--debug] -i IFNAME\n\n"
 			"Options:\n"
 			"\t-d, --dstmac=MAC\n"
@@ -196,14 +196,14 @@ void print_help()
 			"\t-e, --exclude=ADDRESS\n"
 			"\t\tIgnore replies from server with address ADDRESS.\n"
 			"\t-h, --help\n"
-			"\t\tPrint help and exit.\n"
+			"\t\tPrint this help and exit.\n"
 			"\t-i, --iface=IFNAME\n"
 			"\t\tInterface name.\n"
 			"\t-p, --no-promisc\n"
 			"\t\tDo not set network interface to promiscuous mode.\n"
 			"\t-v, --verbose\n"
 			"\t\tVerbose output.\n",
-			PROGNAME, PACKAGE_VERSION, PROGNAME, PROGNAME);
+			PACKAGE_NAME, PACKAGE_VERSION, PACKAGE_NAME);
 }
 
 /*

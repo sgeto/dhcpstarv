@@ -39,7 +39,7 @@ void log_info(const char* format, ...)
 	time_t now = time(NULL);
 
 	strftime(time_format, sizeof(time_format), timefmt, localtime(&now));
-	strncat(time_format, format, sizeof(time_format));
+	strncat(time_format, format, sizeof(time_format)-strlen(time_format)-1);
 
 	va_start(ap, format);
 	vprintf(time_format, ap);
@@ -57,7 +57,7 @@ void log_err(const char* format, ...)
 	time_t now = time(NULL);
 
 	strftime(time_format, sizeof(time_format), timefmt, localtime(&now));
-	strncat(time_format, format, sizeof(time_format));
+	strncat(time_format, format, sizeof(time_format)-strlen(time_format)-1);
 
 	va_start(ap, format);
 	vfprintf(stderr, time_format, ap);
@@ -77,7 +77,7 @@ void log_verbose(const char* format, ...)
 	if (opts.verbose) {
 		strftime(time_format, sizeof(time_format), timefmt,
 				localtime(&now));
-		strncat(time_format, format, sizeof(time_format));
+		strncat(time_format, format, sizeof(time_format)-strlen(time_format)-1);
 
 		va_start(ap, format);
 		vprintf(time_format, ap);
@@ -98,8 +98,8 @@ void log_debug(const char* format, ...)
 	if (opts.debug) {
 		strftime(time_format, sizeof(time_format), timefmt,
 				localtime(&now));
-		strncat(time_format, "(debug) ", sizeof(time_format));
-		strncat(time_format, format, sizeof(time_format));
+		strncat(time_format, "(debug) ", sizeof(time_format)-strlen(time_format)-1);
+		strncat(time_format, format, sizeof(time_format)-strlen(time_format)-1);
 
 		va_start(ap, format);
 		vfprintf(stderr, time_format, ap);

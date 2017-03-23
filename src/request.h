@@ -20,6 +20,8 @@
 #ifndef DHCP_REQUEST_ROUTINE
 #define DHCP_REQUEST_ROUTINE
 
+#include "config.h"
+
 struct dhcp_lease;
 
 int request_lease(int sock_send,

@@ -1,37 +1,47 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ(2.61)
-AC_INIT([dhcpstarv], [0.2.2], [ddomgn@gmail.com])
-AM_INIT_AUTOMAKE
+AC_PREREQ([2.69])
+AC_INIT([dhcpstarv],[0.2.3],[autostart.ini@gmail.com],[dhcpstarv],[https://github.com/sgeto/dhcpstarv])
+AC_CONFIG_AUX_DIR([build-aux])
+AM_INIT_AUTOMAKE([1.14 foreign subdir-objects no-dependencies nostdinc tar-ustar])
+AM_SILENT_RULES([yes])
 AC_CONFIG_SRCDIR([src/main.c])
-AC_CONFIG_HEADER([config.h])
+AC_CONFIG_HEADER([src/config.h])
+: ${CFLAGS="-Wall -O2"}
 
 # Checks for programs.
 AC_PROG_CC
 
-# Checks for libraries.
-
 # Checks for header files.
-AC_HEADER_STDC
-AC_CHECK_HEADERS([arpa/inet.h fcntl.h netinet/in.h stdint.h stdlib.h string.h sys/ioctl.h sys/socket.h sys/time.h unistd.h stddef.h signal.h])
+AC_CHECK_HEADERS([arpa/inet.h fcntl.h netinet/in.h sys/ioctl.h sys/socket.h stddef.h net/ethernet.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
-AC_C_CONST
 AC_TYPE_SIZE_T
-AC_HEADER_TIME
 AC_TYPE_UINT16_T
 AC_TYPE_UINT32_T
 AC_TYPE_UINT8_T
 
 # Checks for library functions.
-AC_PROG_GCC_TRADITIONAL
 AC_FUNC_MALLOC
-AC_FUNC_MEMCMP
-AC_FUNC_SELECT_ARGTYPES
-AC_FUNC_STRFTIME
-AC_FUNC_VPRINTF
 AC_CHECK_FUNCS([inet_ntoa memset select socket strerror])
 
-AC_OUTPUT([Makefile src/Makefile])
+dnl Check for debug
+dnl FIXME make it do any actual debuging
+AC_MSG_CHECKING([whether to compile in debug mode])
+AC_ARG_ENABLE([debug],
+    [AS_HELP_STRING([--enable-debug],[compile with extra debugging output @<:@default=no@:>@])],
+    [use_debug=$enableval],
+    [use_debug=no])
+AC_MSG_RESULT([$use_debug])
+
+if test "x$use_debug" = "xyes"; then
+AC_DEFINE(VERBOSE_DHCP_DEBUG_OUTPUT, 1,
+    [Define to print debug messages (e.g. DHCP packet field values).])
+fi
+
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT
+echo
+AC_MSG_RESULT([Report bugs to https://github.com/sgeto/dhcpstarv/issues])
 

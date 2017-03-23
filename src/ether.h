@@ -1,7 +1,7 @@
 /*
  * ether.h: link level.
  *
- * Copyright (C) 2007 Dmitry Davletbaev <ddomgn@gmail.com>
+ * Copyright (C) 2007 Dmitry Davletbaev <ddo_@users.sourceforge.net>
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -19,6 +19,12 @@
 
 #ifndef ETHER_ROUTINES
 #define ETHER_ROUTINES
+
+#include "config.h"
+
+#ifdef HAVE_NET_ETHERNET_H
+#include <net/ethernet.h>
+#endif  /* HAVE_NET_ETHERNET_H */
 
 int init_ether_header(struct ethhdr* eth,
 		const unsigned char* srcmac,

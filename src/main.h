@@ -20,12 +20,6 @@
 #ifndef MAIN_MODULE
 #define MAIN_MODULE
 
-/* Program name - used to print help. */
-#define PROGNAME		"dhcpstarv"
-
-/* Uncomment to print debug messages (e.g. DHCP packet field values). */
-/* #define VERBOSE_DHCP_DEBUG_OUTPUT */
-
 
 struct app_options {
 	unsigned int exclude_server;

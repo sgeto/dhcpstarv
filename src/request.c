@@ -35,6 +35,9 @@
 #include "leases.h"
 #include "utils.h"
 
+#ifdef VERBOSE_DHCP_DEBUG_OUTPUT
+#include "debug.h"
+#endif
 
 static const unsigned char brd_mac[] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
 
