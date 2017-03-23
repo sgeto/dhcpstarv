@@ -17,12 +17,7 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
-#include <assert.h>
-#include <string.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-
+#include "common.h"
 #include "utils.h"
 #include "dhcp.h"
 
@@ -31,7 +26,7 @@ static char tmp_mac[50];
 
 
 /*
- * Initialise sockaddr_in structure with IP specified in `ip' and port specified
+ * Initialize sockaddr_in structure with IP specified in `ip' and port specified
  * in `port'. This function is not for strings supplied by user so no error
  * checking performed.
  */

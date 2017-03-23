@@ -20,12 +20,6 @@
 #ifndef ETHER_ROUTINES
 #define ETHER_ROUTINES
 
-#include "config.h"
-
-#ifdef HAVE_NET_ETHERNET_H
-#include <net/ethernet.h>
-#endif  /* HAVE_NET_ETHERNET_H */
-
 int init_ether_header(struct ethhdr* eth,
 		const unsigned char* srcmac,
 		const unsigned char* dstmac);

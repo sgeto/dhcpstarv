@@ -17,14 +17,7 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string.h>
-#include <errno.h>
-#include <assert.h>
-#include <netinet/in.h>
-#include <netinet/ether.h>
-#include <sys/ioctl.h>
-#include <net/if.h>
-
+#include "common.h"
 #include "ether.h"
 #include "log.h"
 

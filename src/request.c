@@ -17,15 +17,7 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string.h>
-#include <stdint.h>
-#include <assert.h>
-#include <errno.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netpacket/packet.h>
-#include <linux/if_ether.h>
-
+#include "common.h"
 #include "request.h"
 #include "main.h"
 #include "dhcp.h"
@@ -38,6 +30,7 @@
 #ifdef VERBOSE_DHCP_DEBUG_OUTPUT
 #include "debug.h"
 #endif
+
 
 static const unsigned char brd_mac[] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
 

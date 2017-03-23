@@ -17,11 +17,7 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stddef.h>
-#include <stdio.h>
-#include <stdint.h>
-#include <netinet/in.h>
-
+#include "common.h"
 #include "debug.h"
 #include "dhcp.h"
 #include "utils.h"

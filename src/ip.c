@@ -17,11 +17,7 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stddef.h>
-#include <stdint.h>
-#include <assert.h>
-#include <netinet/ip.h>
-
+#include "common.h"
 #include "ip.h"
 
 

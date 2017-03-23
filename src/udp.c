@@ -17,15 +17,7 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stddef.h>
-#include <stdint.h>
-#include <assert.h>
-#include <string.h>
-#include <netinet/in.h>
-#include <netinet/ether.h>
-#include <netinet/ip.h>
-#include <netinet/udp.h>
-
+#include "common.h"
 #include "udp.h"
 #include "ip.h"
 #include "ether.h"

@@ -17,17 +17,7 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <errno.h>
-#include <string.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <time.h>
-#include <assert.h>
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <netpacket/packet.h>
-#include <linux/if_ether.h>
-
+#include "common.h"
 #include "sock.h"
 #include "log.h"
 #include "dhcp.h"

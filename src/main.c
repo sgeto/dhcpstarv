@@ -17,19 +17,7 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-#include <assert.h>
-#include <time.h>
-#include <getopt.h>
-#include <unistd.h>
-#include <netinet/in.h>
-#include <netinet/ether.h>
-#include <signal.h>
-#include <errno.h>
-
+#include "common.h"
 #include "main.h"
 #include "leases.h"
 #include "request.h"
@@ -38,8 +26,6 @@
 #include "log.h"
 #include "sock.h"
 #include "ether.h"
-
-#include "config.h"
 
 
 /* Application options. */

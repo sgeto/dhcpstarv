@@ -17,13 +17,7 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stddef.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <string.h>
-#include <assert.h>
-#include <time.h>
-
+#include "common.h"
 #include "leases.h"
 #include "dhcp.h"
 #include "log.h"
