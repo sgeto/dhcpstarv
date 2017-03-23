@@ -1,37 +1,124 @@
-03.12.2015 Dmity Davletbaev <ddomgn@gmail.com>
+commit 83b9c0a853552058e7d6a14993dd701208a63fef
+Author: Ali Abdulkadir <autostart.ini@gmail.com>
+Date:   Thu Mar 23 03:21:08 2017 +0300
 
-	* bugfix: fix compiler warnings.
+    Many updates and optimizations (as part of 0.2.3 release)
+    
+    - updated build system (optimized configure.ac and Makefile.am)
+    - less header checks during configure
+    - check for ethernet.h presents (see ether.h)
+    - added --enable-debug option to configure to print debug messages
+    (instead of manually defining VERBOSE_DHCP_DEBUG_OUTPUT)
+    - Just single Makefile for everything
+    - moved config.h generation to src folder
+    - bumped up version to 0.2.3
+    - added myself to copyright and author
+    - fixed all compiler warnings (-Wall)
+    - reduced DHCPDISCOVER and DHCPREQUEST send time by 1 second each
+    - deleted empty NEWS file
 
-	* feature: updated to version 0.2.2.
+commit 4e15f12a9fd0f8535783de8bafb06862119045ce
+Author: Ali Abdulkadir <autostart.ini@gmail.com>
+Date:   Thu Mar 23 00:32:47 2017 +0300
 
-09.01.2009 Dmity Davletbaev <ddomgn@gmail.com>
+    Updated .gitignore
 
-	* feature: updated to version 0.2.1.
+commit ec093992e10d880c33bc84acf26537f42e09cc7a
+Author: Ali Abdulkadir <autostart.ini@gmail.com>
+Date:   Thu Mar 23 00:31:53 2017 +0300
 
-06.01.2009 Dmity Davletbaev <ddomgn@gmail.com>
+    Updated docs
+    
+    RFCs are back (in doc folder)
 
-	* bugfix: block when selecting and reading on receiving socket (less CPU
-	time consumption).
+commit 62c11b51d52378736e140c61362da112f62e05fd
+Author: Ali Abdulkadir <autostart.ini@gmail.com>
+Date:   Tue Mar 21 04:02:27 2017 +0300
 
-	* bugfix: receive only IP packets.
+    Create .gitignore
 
-	* feature: --debug option for developers.
+commit b0a06075c22c389f909d27582e9ebac6710dbc9e
+Author: Dmitry Davletbaev <ddomgn@gmail.com>
+Date:   Thu Dec 3 15:46:18 2015 +0500
 
-	* bugfix: fix requests number output value.
+    Updated to version 0.2.2
 
-	* bugfix: exit request or renew lease loop when critical error occurred
-	so we don't consume a lot of CPU time (for example when network
-	interface is down).
+commit 4024c6e0ede3390a83b43d0578d667a694bdc4e2
+Author: Dmitry Davletbaev <ddomgn@gmail.com>
+Date:   Thu Dec 3 15:39:32 2015 +0500
 
-04.03.2008 Dmity Davletbaev <ddomgn@gmail.com>
+    Fix compiler warnings.
 
-	* feature: `--dstmac' option added.
+commit 27afcac3609c3a29e316c3d036818f2c4a8b013c
+Author: Dmitry Davletbaev <ddomgn@gmail.com>
+Date:   Thu Dec 3 15:31:38 2015 +0500
 
-11.12.2007 Dmity Davletbaev <ddomgn@gmail.com>
+    Fix author's email address.
 
-	* feature: set network interface to promiscuous mode (default). Add
-	`--no-promisc' option.
+commit dcb6709970a1f0cfe91954026a95f943b69ffed7
+Author: Dmitry Davletbaev <ddomgn@gmail.com>
+Date:   Thu Dec 3 15:22:42 2015 +0500
 
-	* feature: free resources and restore non-promiscuous mode if set by
-	dhcpstarv on exit (sigint) as well as on SIGTERM.
+    RFC documents are removed.
+    
+    According to Debian policies existence of RFCs makes the package non-free.
 
+commit b3dce8a92997f8c34ff753ac79705cb6b82119d5
+Author: Dmitry Davletbaev <ddomgn@gmail.com>
+Date:   Sun Jan 11 07:43:15 2009 +0000
+
+    Updated to version 0.2.1
+
+commit 923a71f67686346a59a637dd14e114db9180e214
+Author: Dmitry Davletbaev <ddomgn@gmail.com>
+Date:   Sun Jan 11 07:36:56 2009 +0000
+
+    Updated to version 0.1.1.
+
+commit 5314109564749dbb246a67cb51f5121f1f99453f
+Author: Dmitry Davletbaev <ddomgn@gmail.com>
+Date:   Tue Jan 6 10:31:15 2009 +0000
+
+    A number of bugfixes to reduce CPU time consumption and --debug option.
+
+commit b85f094c2a1689de408fe5958c45820a425636f0
+Author: Dmitry Davletbaev <ddomgn@gmail.com>
+Date:   Tue Mar 4 10:46:14 2008 +0000
+
+    Pointer assertion.
+
+commit 5c588f9257a90a870030bc2c1bd6507569d7e774
+Author: Dmitry Davletbaev <ddomgn@gmail.com>
+Date:   Tue Mar 4 10:44:05 2008 +0000
+
+    --dstmac option added
+
+commit 74aa754ff9ea9a4ebf9f48e06c27ef96254f835b
+Author: Dmitry Davletbaev <ddomgn@gmail.com>
+Date:   Thu Dec 20 06:02:54 2007 +0000
+
+    Log string size as macro.
+
+commit 3612e66f07206edfb152c603df968f1b52357b97
+Author: Dmitry Davletbaev <ddomgn@gmail.com>
+Date:   Tue Dec 11 12:18:34 2007 +0000
+
+    Fix README.
+
+commit 478158b666a7f13ed9a11bdc0594b79600c9e11e
+Author: Dmitry Davletbaev <ddomgn@gmail.com>
+Date:   Tue Dec 11 10:44:11 2007 +0000
+
+    Email address changed.
+
+commit 75d3af038f4f9b73df01c35a9538995bfe1352e2
+Author: Dmitry Davletbaev <ddomgn@gmail.com>
+Date:   Tue Dec 11 07:17:22 2007 +0000
+
+    Set interface to promiscuous mode. Signal handler added.
+
+commit 9ab9adbdd3c8208cc6cdb6bc66ff319fe8ac3470
+Author: Dmitry Davletbaev <ddomgn@gmail.com>
+Date:   Tue Dec 11 04:39:35 2007 +0000
+
+    Initial revision
