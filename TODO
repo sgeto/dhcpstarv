@@ -1,0 +1,17 @@
+Some plans and hopes for dhcpstarv:
+
+- reduce unnecessary header files (and checks)
+
+- it should be (much) faster
+
+- MAC addresses should be more randomized
+
+- too many newer (but low-budget) home routers refuse to play along. Get to the bottom of this!
+
+- the --debug option is very irritating it needs to be either:
+        - become part of the overall debug build (see configure --help)
+        - become part of the -v --verbose option (showing only "v" is typed twice so dhcpstarv -vv -i eth0 for example)
+
+- (try to) port to Windows
+
+- create deb package(s)
