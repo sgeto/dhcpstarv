@@ -2,13 +2,13 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([dhcpstarv],[0.2.3],[autostart.ini@gmail.com],[dhcpstarv],[https://github.com/sgeto/dhcpstarv])
+AC_INIT([dhcpstarv],[0.2.3],[https://github.com/sgeto/dhcpstarv/issues],[dhcpstarv],[https://github.com/sgeto/dhcpstarv])
 AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE([1.14 foreign subdir-objects no-dependencies nostdinc tar-ustar])
 AM_SILENT_RULES([yes])
 AC_CONFIG_SRCDIR([src/main.c])
 AC_CONFIG_HEADER([src/config.h])
-: ${CFLAGS="-Wall -O2"}
+: ${CFLAGS="-Wall -Wextra -Wno-sign-compare -pedantic -O2"}
 
 # Checks for programs.
 AC_PROG_CC
@@ -42,6 +42,23 @@ fi
 
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
-echo
-AC_MSG_RESULT([Report bugs to https://github.com/sgeto/dhcpstarv/issues])
 
+AC_MSG_RESULT([
+$PACKAGE_STRING Configuration Complete
+======================================
+
+Configuration Summary
+---------------------
+    Prefix: ...................... ${prefix}
+    CC: .......................... ${CC}
+    CFLAGS:....................... ${CFLAGS}
+    LD: .......................... ${LD}
+    LDFLAGS: ..................... ${LDFLAGS}
+    Compile in debug mode: ....... ${use_debug}
+
+To override options, see ./configure --help
+
+To disable silent building and print the full command line of every stage, run "make V=1"
+
+Report bugs to https://github.com/sgeto/dhcpstarv/issues
+])
