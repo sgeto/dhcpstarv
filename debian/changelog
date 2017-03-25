@@ -1,0 +1,5 @@
+dhcpstarv (0.2.2-1) unstable; urgency=medium
+
+  * Initial release. (Closes: #806914).
+
+ -- Martijn van Brummelen <martijn@brumit.nl>  Wed, 02 Dec 2015 19:54:25 +0100

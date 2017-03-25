@@ -1,0 +1,20 @@
+Source: dhcpstarv
+Build-Depends:
+ debhelper (>= 9),
+ dh-autoreconf,
+Maintainer: Martijn van Brummelen <martijn@brumit.nl>
+Standards-Version: 3.9.6
+Section: net
+Priority: optional
+Homepage: http://dhcpstarv.sourceforge.net/
+Vcs-Git: git://git.debian.org/git/collab-maint/dhcpstarv.git
+Vcs-browser: http://git.debian.org/?p=collab-maint/dhcpstarv.git
+
+Package: dhcpstarv
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: DHCP starvation utility
+ Dhcpstarv is tool that implements DHCP starvation attack. 
+ It requests DHCP leases on a specified interface, 
+ save them and renew on regular basis.
+
